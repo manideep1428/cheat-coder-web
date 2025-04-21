@@ -1,0 +1,61 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 0%;
+    --foreground: 60 9.1% 97.8%;
+    --card: 0 0% 5%;
+    --card-foreground: 60 9.1% 97.8%;
+    --popover: 0 0% 5%;
+    --popover-foreground: 60 9.1% 97.8%;
+    --primary: 220 100% 50%;
+    --primary-foreground: 210 9.8% 90%;
+    --secondary: 12 6.5% 15.1%;
+    --secondary-foreground: 60 9.1% 97.8%;
+    --muted: 12 6.5% 15.1%;
+    --muted-foreground: 24 5.4% 63.9%;
+    --accent: 12 6.5% 15.1%;
+    --accent-foreground: 60 9.1% 97.8%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 60 9.1% 97.8%;
+    --border: 12 6.5% 15.1%;
+    --input: 12 6.5% 15.1%;
+    --ring: 220 100% 50%;
+    --radius: 0.5rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Custom classes for Interview Coder site */
+@layer components {
+  .navbar-item {
+    @apply text-neutral-300 relative px-4 py-2 hover:text-white transition-colors;
+  }
+
+  .btn-yellow {
+    @apply rounded-full bg-primary text-black font-medium drop-shadow-[2px_0_10px_hsl(220_100%_50%_/_0.4)] hover:opacity-90 transition-all;
+  }
+
+  .frosted-glass {
+    @apply bg-black/20 backdrop-blur-xl;
+  }
+
+  .badge-new {
+    @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold
+           bg-primary/10 text-primary border border-primary/40
+           [text-shadow:0_0_10px_hsl(220_100%_50%_/_0.5)]
+           [box-shadow:0_0_20px_hsl(220_100%_50%_/_0.3)]
+           before:absolute before:-inset-0.5 before:bg-primary/20 before:rounded-full
+           before:blur-[8px] before:-z-10 ml-2 relative;
+  }
+}
