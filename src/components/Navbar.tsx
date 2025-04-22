@@ -5,11 +5,12 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { AvatarMenu } from "@/components/AvatarMenu";
+import { SignInButton, SignUpButton, useAuth, UserProfile } from "@clerk/nextjs";
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
+  const { isSignedIn } = useAuth();
   useEffect(() => {
     const handleScroll = () => {
       const offset = window.scrollY;
@@ -72,18 +73,20 @@ export function Navbar() {
         </div>
 
         <div className="flex items-center gap-4">
-          <Link
-            href="/signin"
-            className="text-stone-400 font-medium text-sm hover:text-white mr-2 z-20"
-          >
-            Login
-          </Link>
-          <Link href="/signup" className="hidden md:block">
-            <Button className="btn-yellow rounded-full px-6 py-1.5 text-sm">
-              Sign up
-            </Button>
-          </Link>
-          <AvatarMenu />
+         { !isSignedIn ?  (
+          <div className="flex gap-2">
+             <Button
+           className="btn-yellow rounded-full px-6 py-1.5 text-sm"
+         >
+           <SignInButton />
+         </Button>
+         <Button className="btn-yellow rounded-full px-6 py-1.5 text-sm">
+           <SignUpButton />
+         </Button>
+            </div>
+         ) : 
+         <AvatarMenu />
+          }
         </div>
       </div>
 
