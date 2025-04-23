@@ -4,23 +4,23 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { SignOutButton, useUser } from "@clerk/nextjs";
 import * as PopoverPrimitive from "@radix-ui/react-popover";
+import { signOut, useSession } from "next-auth/react";
 
 export function AvatarMenu() {
   const [open, setOpen] = useState(false);
   const router = useRouter();
-  const { isSignedIn , user } = useUser();
+  const { data : session } = useSession();
 
-  if (!isSignedIn) return null;
+  if (!session?.user) return null;
 
   return (
     <PopoverPrimitive.Root open={open} onOpenChange={setOpen}>
       <PopoverPrimitive.Trigger asChild>
         <button aria-label="Open user menu">
           <Avatar>
-            <AvatarImage src={ user?.imageUrl || "/avatar-placeholder.png"} alt="User avatar" />
-            <AvatarFallback>{user?.fullName || "U"}</AvatarFallback>
+            <AvatarImage src={ session?.user?.image || "/avatar-placeholder.png"} alt="User avatar" />
+            <AvatarFallback>{session?.user?.name || "U"}</AvatarFallback>
           </Avatar>
         </button>
       </PopoverPrimitive.Trigger>
@@ -30,7 +30,7 @@ export function AvatarMenu() {
           sideOffset={8}
           className="z-[100] rounded-lg bg-zinc-900 border border-zinc-700 p-4 shadow-lg min-w-[160px]"
         >
-          <div className="font-semibold mb-2 text-white">{user?.fullName || "User"}</div>
+          <div className="font-semibold mb-2 text-white">{session?.user?.name || "User"}</div>
           <div className="flex flex-col gap-2">
             <Button
               variant="outline"
@@ -53,7 +53,12 @@ export function AvatarMenu() {
               Dashboard
             </Button>
             <div className="w-full">
-              <SignOutButton/>
+              <Button onClick={() => {
+                setOpen(false);
+                signOut();
+              }} className="w-full">
+                Sign out
+              </Button>
             </div>
           </div>
         </PopoverPrimitive.Content>

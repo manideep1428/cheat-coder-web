@@ -3,8 +3,11 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import { useSession } from "next-auth/react";
+
 
 export function HeroSection() {
+  const session = useSession();
   return (
     <section className="relative pt-32 pb-16 md:pt-40 md:pb-24 overflow-hidden">
       {/* Background diagonal effect */}
@@ -14,13 +17,21 @@ export function HeroSection() {
         <h1 className="text-3xl md:text-5xl font-bold tracking-tight mb-6">
           AI for Leetcode Interviews
         </h1>
-        <p className="m-2">Truly inspired from <Link className="text-blue-500" href={"https://www.interviewcoder.co/"}>Interview Coder</Link></p>
+        <p className="m-4">Truly Copied from <Link className="text-blue-500" href={"https://www.interviewcoder.co/"}>Interview Coder</Link></p>
         <div className="flex flex-col sm:flex-row justify-center gap-4 mb-16">
-          <Link href="/signup">
+         { session.data?.user ? (
+          <Link href="/api-keys">
             <Button className="btn-yellow rounded-full px-6 py-6 text-base">
-              Try for free
+              Get Access Key
             </Button>
           </Link>
+        ) : (
+          <Link href="/signup">
+            <Button className="btn-yellow rounded-full px-6 py-6 text-base">
+              Get Started
+            </Button>
+          </Link>
+        )}
           <Link href="/download">
             <Button variant="outline" className="rounded-full px-6 py-6 text-base border-zinc-800 hover:bg-zinc-800/30">
               Download app

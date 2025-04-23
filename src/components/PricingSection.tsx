@@ -21,10 +21,12 @@ export function PricingSection() {
     {
       name: "Limited Offer",
       price: "₹19",
-      description: "For new users, valid 2 days",
+      description: "For new users",
       features: [
         "All Pro features",
-        "Valid only for new registrations",
+        "Valid only for new users",
+        "3 requests",
+        "Valid for one time only",
         "Special price for first 2 days",
       ],
       cta: "Unlock Now",
@@ -34,11 +36,12 @@ export function PricingSection() {
     },
     {
       name: "Starter",
-      price: "₹100",
+      price: "₹199",
       description: "One-time payment",
       features: [
-        "Access to basic features",
-        "10 mock interview",
+        "All Pro features",
+        "25 requests",
+        "No extra requests",
         "Email support",
       ],
       cta: "Start now",
@@ -46,7 +49,7 @@ export function PricingSection() {
     },
     {
       name: "Pro",
-      price: "₹299",
+      price: "₹599",
       description: "One-time payment",
       features: [
         "Full access to all features",
@@ -94,6 +97,7 @@ export function PricingSection() {
                 <h3 className="text-lg font-medium mb-2">{plan.name}</h3>
                 <div className="flex items-baseline gap-1">
                   <span className="text-3xl font-bold">{plan.price}</span>
+                  { plan.price == "₹19" ? <span> for 2 days </span> : <span>/month</span> }
                   <span className="text-sm text-zinc-400">{plan.description}</span>
                 </div>
               </div>

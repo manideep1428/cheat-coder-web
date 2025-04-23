@@ -1,6 +1,6 @@
 "use client";
 
-import { ClerkProvider } from "@clerk/nextjs";
+import { SessionProvider } from "next-auth/react";
 import { Suspense, useEffect } from "react";
 
 export default function ClientBody({
@@ -16,11 +16,11 @@ export default function ClientBody({
 
   return (
     <body className="antialiased bg-black text-white" suppressHydrationWarning>
-      <ClerkProvider>
+      <SessionProvider>
         <Suspense>
       {children}
       </Suspense>
-      </ClerkProvider>
+      </SessionProvider>
     </body>
   );
 }

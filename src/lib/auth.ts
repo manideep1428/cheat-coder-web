@@ -1,41 +1,36 @@
 import Google from "next-auth/providers/google";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { prisma } from "../../prisma";
+import { NextAuthOptions } from "next-auth";
 
-export const authOptions = {
+export const authOptions:NextAuthOptions = {
     adapter: PrismaAdapter(prisma),
     providers: [
       Google({
         clientId: process.env.GOOGLE_CLIENT!,
         clientSecret : process.env.GOOGLE_SECRET!
       })
-    ]
-    ,
-    strategy: "jwt",
-    pages: {
-      signIn: "/signin",
-      signOut: "/signout",
-      error: "/auth/err"
+    ],
+    secret: process.env.NEXTAUTH_SECRET,
+    session: {
+      strategy: "jwt",
     },
     callbacks: {
       //@ts-ignore
-      async jwt({ token, user }) {
-        if (user) {
-          token.id = user.id; 
+      async jwt({ token, account }) {
+        if (account) {
+          token.acessToken = account.access_token
         }
-        return token;
+        return token
       },
       //@ts-ignore
       async session({ session, token }) {
-        session.accessToken = token; // expose it to the client
-        return session;
-      },
-      //@ts-ignore
-      async redirect({ url, baseUrl }) {
-        // Always redirect to dashboard
-        return baseUrl + "/dashboard";
-      },
-    },
-    secret: process.env.NEXTAUTH_SECRET,
-    
+        if (token) {
+          //@ts-ignore
+          session.acessToken = token.acessToken
+          return session
+        }
+        return session
+      }
+    }
 }
