@@ -26,7 +26,7 @@ export function CtaSection() {
           <div className="flex flex-col sm:flex-row justify-center gap-4">
             <Link href="/signup">
               <Button className="btn-yellow rounded-full px-8 py-6 text-base">
-                Try for free
+                Get the App
               </Button>
             </Link>
             <Link href="/download">

@@ -39,7 +39,7 @@ export function DoesItWorkSection() {
         <div className="text-center mb-12">
           <h2 className="text-2xl md:text-3xl font-bold mb-6">Does it still work?</h2>
           <p className="text-zinc-400 max-w-2xl mx-auto">
-            Yes, Interview Coder is fully functional and compatible with all major technical interview platforms. We regularly update our software to ensure it remains undetectable and effective.
+              Yes, Cheat Coder is fully functional and compatible with all major technical interview platforms. We regularly update our software to ensure it remains undetectable and effective.
           </p>
         </div>
 
@@ -49,10 +49,10 @@ export function DoesItWorkSection() {
             <span className="text-xs text-zinc-500">April 15, 2025</span>
           </div>
           <p className="text-zinc-400 mb-4">
-            Our team continues to monitor all platforms closely. The most recent patch ensures compatibility with the latest LeetCode update and improves performance on HackerRank.
+            Please visit <Link className="text-blue-500" href={"https://www.interviewcoder.co/"}>Interview Coder</Link> to see how it works
           </p>
           <div className="flex gap-4">
-            <Button variant="outline" size="sm" className="border-zinc-700 text-zinc-400 hover:text-white hover:bg-zinc-800">
+            <Button onClick={() => window.open("https://www.interviewcoder.co/", "_blank")}  variant="outline" size="sm" className="border-zinc-700 text-zinc-400 hover:text-white hover:bg-zinc-800">
               Release Notes
             </Button>
           </div>
