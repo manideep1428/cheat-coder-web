@@ -14,23 +14,5 @@ export const authOptions:NextAuthOptions = {
     secret: process.env.NEXTAUTH_SECRET,
     session: {
       strategy: "jwt",
-    },
-    callbacks: {
-      //@ts-ignore
-      async jwt({ token, account }) {
-        if (account) {
-          token.acessToken = account.access_token
-        }
-        return token
-      },
-      //@ts-ignore
-      async session({ session, token }) {
-        if (token) {
-          //@ts-ignore
-          session.acessToken = token.acessToken
-          return session
-        }
-        return session
-      }
     }
 }
