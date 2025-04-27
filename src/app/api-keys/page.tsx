@@ -20,9 +20,9 @@ export default async function ApiKeysPage() {
   const session = await getServerSession(authOptions)
   console.log("Session check:", !!session, session?.user?.email);
 
-  if (!session?.user) {
-    redirect("/signin")
-  }
+  // if (!session?.user) {
+  //   redirect("/signin")
+  // }
 
   const apiKeys = await getUserApiKeys()
 

@@ -1,9 +1,12 @@
 "use client";
 
-import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { CheckIcon } from "lucide-react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { useRef } from "react";
+import Checkout from "./CheckOut";
 
 interface PricingPlan {
   name: string;
@@ -11,61 +14,72 @@ interface PricingPlan {
   description: string;
   features: string[];
   cta: string;
-  href: string;
   popular?: boolean;
   limited?: boolean;
 }
 
 export function PricingSection() {
+  const session = useSession();
+  const router = useRouter();
+
+  const checkoutRef = useRef<any>(null);
+
+  const  handlePayment = (price : string) => {
+    if (!session.data?.user) {
+        router.push("/signup")
+        return     
+    }
+    const amount = parseInt(price.replace(/[^\d]/g, ""), 10); // ₹199 → 19900 paisa
+    checkoutRef.current?.pay(amount);
+
+  }
   const pricingPlans: PricingPlan[] = [
     {
       name: "Limited Offer",
-      price: "₹19",
+      price: "₹49",
       description: "For new users",
       features: [
         "All Pro features",
         "Valid only for new users",
-        "3 requests",
-        "Valid for one time only",
+        "One Day pass",
+        "Valid for one interview",
         "Special price for first 2 days",
       ],
       cta: "Unlock Now",
-      href: "/signup",
       popular: false,
       limited: true,
     },
     {
       name: "Starter",
-      price: "₹199",
+      price: "₹499",
       description: "One-time payment",
       features: [
         "All Pro features",
-        "25 requests",
-        "No extra requests",
+        "30 Interviews",
         "Email support",
       ],
       cta: "Start now",
-      href: "/signup",
     },
     {
       name: "Pro",
-      price: "₹599",
+      price: "₹999",
       description: "One-time payment",
       features: [
         "Full access to all features",
         "Unlimited interviews",
         "Support for all platforms",
+        "Unlimited Requests",
         "Advanced language models",
         "Email support",
       ],
       cta: "Go Pro",
-      href: "/signup",
       popular: true,
     },
   ];
 
   return (
     <section className="py-16 md:py-24" id="pricing">
+      <Checkout ref={checkoutRef} />
       <div className="container max-w-6xl mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-2xl md:text-3xl font-bold mb-6">Pricing</h2>
@@ -111,14 +125,13 @@ export function PricingSection() {
                   </li>
                 ))}
               </ul>
-              <Link href={plan.href} className="mt-auto">
-                <Button
-                  className={plan.popular ? "btn-yellow w-full" : "w-full"}
-                  variant={plan.popular ? "default" : "outline"}
-                >
-                  {plan.cta}
-                </Button>
-              </Link>
+             <Button
+                className={plan.popular ? "btn-yellow w-full" : "w-full"}
+                variant={plan.popular ? "default" : "outline"}
+                onClick={() => handlePayment(plan.price)}
+              >
+                {plan.cta}
+              </Button>
             </Card>
           ))}
         </div>
