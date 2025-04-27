@@ -12,11 +12,10 @@ model User {
   name          String?
   email         String          @unique
   emailVerified DateTime?
+  token        String?     @unique
   image         String?
   accounts      Account[]
   sessions      Session[]
-  apiKeys       ApiKey[] 
-  userPlans     UserPlan[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -52,45 +51,3 @@ model Session {
   updatedAt DateTime @updatedAt
 }
  
-model VerificationToken {
-  identifier String
-  token      String
-  expires    DateTime
- 
-  @@id([identifier, token])
-}
- 
-model ApiKey {
-  id        String   @id @default(cuid())
-  key       String   @unique
-  jwt       String?  // JWT token for this user
-  userId    String   @unique
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  createdAt DateTime @default(now())
-}
-
-model Plan {
-  id        String     @id @default(cuid())
-  name      String   
-  price     Int      
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  userPlans UserPlan[]
-}
-
-
-model UserPlan {
-  id        String   @id @default(cuid())
-  userId    String
-  planId    String
-  status    String   
-  expiresAt DateTime? 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  user      User  @relation(fields: [userId], references: [id], onDelete: Cascade)
-  plan      Plan  @relation(fields: [planId], references: [id], onDelete: Cascade)
-
-  @@index([userId])
-  @@index([planId])
-}

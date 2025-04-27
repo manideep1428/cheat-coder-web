@@ -8,7 +8,7 @@ const JWT_SECRET = process.env.JWT_SECRET!;
 export function generateUserJWT(userId: string): string {
   const payload = { userId };
   // Expires in 7 days
-  return jwt.sign(payload, JWT_SECRET, { expiresIn: '7d' });
+  return jwt.sign(payload, JWT_SECRET);
 }
 
 /**

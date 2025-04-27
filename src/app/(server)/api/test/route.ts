@@ -2,8 +2,7 @@ import axios from "axios";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest, res: NextResponse){
-  const geminiApiKey = req.headers.get("Authorization");
-  console.log(geminiApiKey)
+  const geminiApiKey = process.env.GEMINI_API_KEY;
   const { imageDataList , language } = await req.json();
   // Defensive: Ensure imageDataList is always an array
   const safeImageDataList = Array.isArray(imageDataList) ? imageDataList : [];

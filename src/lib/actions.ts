@@ -3,9 +3,9 @@
 import { revalidatePath } from "next/cache"
 import { getServerSession } from "next-auth"
 import { redirect } from "next/navigation"
-import { generateApiKey } from "@/lib/utils"
 import { prisma } from "../../prisma"
-import { useSession } from "next-auth/react"
+import jwt from "jsonwebtoken"
+import { getSession } from "next-auth/react"
 
 export async function getUserApiKeys() {
   const session = await getServerSession()
@@ -24,26 +24,15 @@ export async function getUserApiKeys() {
     return []
   }
 
-  const apiKeys = await prisma.apiKey.findMany({
-    where: {
-      userId: user.id,
-    },
-    orderBy: {
-      createdAt: "desc",
-    },
-  })
-
-  return apiKeys
+  return user.token 
 }
 
-export async function createApiKey(formData: FormData) {
+export async function createToken() {
   const session = await getServerSession()
 
   if (!session?.user?.email) {
-    redirect("/api/auth/signin")
+    redirect("/signin")
   }
-
-  const name = formData.get("name") as string
 
   const user = await prisma.user.findUnique({
     where: {
@@ -52,57 +41,38 @@ export async function createApiKey(formData: FormData) {
   })
 
   if (!user) {
-    redirect("/api/auth/signin")
+    redirect("/signin")
   }
 
   // Generate a secure API key
-  const apiKey = generateApiKey()
+  const token = await generateApiKey()
+  
 
   // Create the API key in the database
-  const createdKey = await prisma.apiKey.create({
-    data: {
-      key: apiKey,
-      name,
-      userId: user.id,
-      // Set expiration to 1 year from now (optional)
-      expiresAt: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000),
-    },
+     await prisma.user.update({
+     where  : {
+       email : user.email
+     } ,
+     data : {
+       token
+     }
   })
 
   // Revalidate the API keys page
   revalidatePath("/api-keys")
 
   // Redirect to a success page with the API key
-  redirect(`/api-keys/success?key=${apiKey}&id=${createdKey.id}`)
+  redirect(`/api-keys/success?key=${token}`)
 }
 
-export async function deleteApiKey(formData: FormData) {
-  const session = await getServerSession()
 
+export async function generateApiKey() {
+  const session  =  await getSession()
   if (!session?.user?.email) {
-    redirect("/api/auth/signin")
+    redirect("/signin")
   }
 
-  const keyId = formData.get("keyId") as string
-
-  const user = await prisma.user.findUnique({
-    where: {
-      email: session.user.email,
-    },
-  })
-
-  if (!user) {
-    redirect("/api/auth/signin")
-  }
-
-  // Delete the API key
-  await prisma.apiKey.delete({
-    where: {
-      id: keyId,
-      userId: user.id,
-    },
-  })
-
-  // Revalidate the API keys page
-  revalidatePath("/api-keys")
+  const token = jwt.sign(session?.user , process.env.JWT_SECRET!)
+  return token
 }
+
