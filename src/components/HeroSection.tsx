@@ -20,7 +20,7 @@ export function HeroSection() {
         <p className="m-4">Truly Copied from <Link className="text-blue-500" href={"https://www.interviewcoder.co/"}>Interview Coder</Link></p>
         <div className="flex flex-col sm:flex-row justify-center gap-4 mb-16">
          { session.data?.user ? (
-          <Link href="/api-keys">
+          <Link href="/get-token">
             <Button className="btn-yellow rounded-full px-6 py-6 text-base">
               Get Access Key
             </Button>

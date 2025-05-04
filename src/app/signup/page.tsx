@@ -1,14 +1,17 @@
 "use client"
  
- import { Navbar } from "@/components/Navbar";
  import { Footer } from "@/components/Footer";
  import Link from "next/link";
- import { Button } from "@/components/ui/button";
- import { Input } from "@/components/ui/input";
  import Image from "next/image";
- import { signIn } from "next-auth/react";
+ import { signIn, useSession } from "next-auth/react";
+import { redirect } from "next/navigation";
  
  export default function SignUp() {
+  const { data: session } = useSession()
+
+  if (session?.user) {
+    redirect("/")
+  }
    return (
      <div className="min-h-screen bg-black text-white flex flex-col">
        <div className="flex-1 flex items-center justify-center px-4 py-12">
