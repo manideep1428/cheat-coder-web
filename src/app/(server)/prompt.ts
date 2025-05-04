@@ -26,20 +26,20 @@ If you include code examples, use proper markdown code blocks with language spec
 
 
 
-      const promptText = `
+     export const promptText = `
 Generate a detailed solution for the following coding problem:
 
 PROBLEM STATEMENT:
-${problemInfo.problem_statement}
+${problem_statement}
 
 CONSTRAINTS:
-${problemInfo.constraints || "No specific constraints provided."}
+${constraints || "No specific constraints provided."}
 
 EXAMPLE INPUT:
-${problemInfo.example_input || "No example input provided."}
+${example_input || "No example input provided."}
 
 EXAMPLE OUTPUT:
-${problemInfo.example_output || "No example output provided."}
+${example_output || "No example output provided."}
 
 LANGUAGE: ${language}
 

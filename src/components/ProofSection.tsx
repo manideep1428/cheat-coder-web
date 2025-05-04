@@ -14,11 +14,9 @@ export function ProofSection() {
         </div>
 
         <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-6 md:p-8">
-          <div onClick={()=>window.open("https://www.interviewcoder.co/#proof")} className="relative aspect-[16/9] cursor-pointer overflow-hidden rounded-lg mb-6">
-            <Image
-              src="https://ext.same-assets.com/3990742620/849522504.jpeg"
-              alt="Cheat Coder in action"
-              fill
+          <div className="relative aspect-[16/9] cursor-pointer overflow-hidden rounded-lg mb-6">
+            <video
+              src="https://www.interviewcoder.co/videos/amazon.mp4"
               className="object-cover"
             />
             <div className="absolute inset-0 flex items-center justify-center">

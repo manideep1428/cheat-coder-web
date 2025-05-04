@@ -1,5 +1,6 @@
 "use client";
 
+import { Toaster } from "@/components/ui/toaster";
 import { SessionProvider } from "next-auth/react";
 import { Suspense, useEffect } from "react";
 
@@ -20,6 +21,7 @@ export default function ClientBody({
         <Suspense>
       {children}
       </Suspense>
+      <Toaster/>
       </SessionProvider>
     </body>
   );
