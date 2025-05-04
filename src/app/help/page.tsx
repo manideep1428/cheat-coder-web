@@ -7,7 +7,6 @@ import Image from "next/image";
 export default function HelpPage() {
   return (
     <div className="min-h-screen bg-black text-white flex flex-col">
-      <Navbar />
 
       <div className="flex flex-col md:flex-row w-full">
         {/* Sidebar - Desktop only */}
