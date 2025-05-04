@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { extract, ProblemData } from "../ai/problem";
 
 export async function POST(req: NextRequest, res: NextResponse){
-  const geminiApiKey = "AIzaSyCitbtPtIOPhS0ze0yq10audatA2oyHR3s";
+  const geminiApiKey = process.env.GEMINI_API_KEY;
   const { imageDataList , language } = await req.json();
   const safeImageDataList = Array.isArray(imageDataList) ? imageDataList : [];
   let problemData : ProblemData;
@@ -47,15 +47,6 @@ export async function POST(req: NextRequest, res: NextResponse){
         responseContent = responseData.candidates[0].content.parts[0].text;
         problemData = extract(responseContent);
         return NextResponse.json({json : problemData})
-        // const finalResponse  = await axios.post( `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${geminiApiKey}`,
-        //   {
-        //     contents: promptText,
-        //     generationConfig: {
-        //       temperature: 0.2,
-        //       maxOutputTokens: 4000
-        //     }
-        //   }
-        // );
       } catch (error) {
         console.error("Error using Gemini API for solution:", error);
         return NextResponse.json({

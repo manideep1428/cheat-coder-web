@@ -1,10 +1,12 @@
-import { Navbar } from "@/components/Navbar";
+"use client"
 import { Footer } from "@/components/Footer";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 export default function HelpPage() {
+  const router = useRouter();
   return (
     <div className="min-h-screen bg-black text-white flex flex-col">
 
@@ -68,10 +70,10 @@ export default function HelpPage() {
 
                     <div className="space-y-1">
                       <h3 className="text-[13px] font-medium text-muted-foreground px-3 mb-2">Account and Subscription</h3>
-                      <button className="w-full text-left px-3 py-2 rounded-lg text-[13px] transition-colors text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/30">
+                      <button onClick={()=> router.push("/help/policy")} className="w-full text-left px-3 py-2 rounded-lg text-[13px] transition-colors text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/30">
                         Cancel Subscription
                       </button>
-                      <button className="w-full text-left px-3 py-2 rounded-lg text-[13px] transition-colors text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/30">
+                      <button onClick={()=> router.push("/help/refund")} className="w-full text-left px-3 py-2 rounded-lg text-[13px] transition-colors text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/30">
                         Refund Policy
                       </button>
                     </div>
@@ -93,8 +95,8 @@ export default function HelpPage() {
                       <h3 className="text-[13px] font-medium text-muted-foreground px-3 mb-2">Support</h3>
                       <div className="px-3 py-2 text-[13px] text-zinc-400 space-y-2">
                         <div>
-                          <p>972-273-9630</p>
-                          <p>support@interviewcoder.co</p>
+                          <p>+91 8096368241</p>
+                          <p>saimanideep.ch12345@gmail.com</p>
                         </div>
                       </div>
                     </div>
