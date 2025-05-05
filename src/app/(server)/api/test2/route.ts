@@ -35,7 +35,7 @@ function extract(jsonString: string): ProblemData {
 
 export async function POST(req: NextRequest) {
   const deepseekApiKey = process.env.DEEPSEEK_API_KEY;
-  
+  console.log("Came req")
   if (!deepseekApiKey) {
     return NextResponse.json({
       success: false,
@@ -44,8 +44,11 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const { base64, language } = await req.json();
-    const safeImageDataList = Array.isArray(base64) ? base64 : [];
+    const { base64, lang } = await req.json();
+    // console.log("Base64:", base64);
+    console.log("Language:", lang);
+    const language = "python"
+    const safeImageDataList = base64
     
 
     // First API call - Extract problem information from images
@@ -57,12 +60,12 @@ export async function POST(req: NextRequest) {
             type: "text",
             text: `You are a coding challenge interpreter. Analyze the screenshots of the coding problem and extract all relevant information. Return the information in JSON format with these fields: problem_statement, constraints, example_input, example_output. Just return the structured JSON without any other text. Preferred coding language we gonna use for this problem is ${language}`
           },
-          ...safeImageDataList.map((data) => ({
-            type: "image",
+          {
+            type: "image_url",
             image_url: {
-              url: `data:image/png;base64,${data}`
+              url: `data:image/png;base64,${safeImageDataList}`
             }
-          }))
+          }
         ]
       }
     ];
@@ -73,7 +76,7 @@ export async function POST(req: NextRequest) {
         model: "deepseek-chat",
         messages: extractionMessages,
         temperature: 0.2,
-        max_tokens: 4000
+        max_tokens: 8000
       },
       {
         headers: {
@@ -91,6 +94,8 @@ export async function POST(req: NextRequest) {
     console.log("Extraction response:", responseContent);
     
     const problemData = extract(responseContent);
+
+    console.log("Problem data:", problemData);
 
     // Second API call - Generate solution based on extracted problem
     const promptText = `
@@ -144,6 +149,7 @@ export async function POST(req: NextRequest) {
     }
     
     const resultContent = solutionResponse.data.choices[0].message.content;
+
     
     return NextResponse.json({
       success: true,
